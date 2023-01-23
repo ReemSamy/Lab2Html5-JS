@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab2</title>
+    <style>
+        
+        h1{
+            font-family: cursive;
+            color: #d316f9ac;
+        }
+        h2{
+            font-family: cursive;
+            color:rgb(2, 122, 82)
+        }
+        h3{
+            font-family: cursive;
+            color:rgb(250, 1, 9)
+        }
+        h4
+        {
+            font-family: cursive;
+            font-size: x-large;
+            /* text-align: center; */
+            color: #240116ac;
+
+        }
+        span{
+            font-family: cursive;
+            color: rgb(5, 124, 84);
+            font-size:90%;
+            font-weight: bold;
+        }
+        button
+        {
+            font-family: cursive;
+            border-radius: 50%;
+            background-color: #f1f91683;
+            font-size: large;
+            font-weight: bold;
+            
+        }
+        input
+        {
+            border-radius: 40%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Geolocation API</h1>
+    <button onclick="getloc();"> Go For Location </button>
+    <h2> web storage</h2>
+    <form>
+        <span>Enter Your Name :</span>
+    <input  id  ="txt1" type="text">
+    
+    
+    <span>Enter Your Address:</span>
+    <input  id = "txt2" type="text">
+    
+    <button id = "btn">submit</button>
+    
+   <h3 id = "tx1"></h3>
+    <hr>
+    <h3 id = "tx2"></h3>
+    <hr>
+    <h3 id = "tx3"></h3>
+    </form>
+
+    <h4> web worker</h4>
+    <button id="btn1">Calc</button>
+    <button id="btn2">res</button>
+    <h2>MicroData</h2>
+    <!-- <div itemscope itemtype="http://data-vocabulary.org/Organization">
+        <h2 itemprop="name">PD,ITI,SD</h2>
+        <h2 itemprop="tel">0111252525</h2>
+        <h2 itemprop="name">http://www.iti.gov.eg/</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet ea earum corrupti reiciendis ab odit a, ratione quisquam dolor esse. Quia sint cumque 
+            adipisci fugiat alias. Eaque maxime culpa assumenda.</p>
+            <div itemscope itemprop="address" itemtype="http://data-vocabulary.org/Address">
+                <span itemprop="country-name">Egypt</span>
+                <span itemprop="street-address">ekbal</span>
+                <span itemprop="locality">Alex</span>
+                <span itemprop="postal-code">1234</span>
+            </div>
+            <div itemscope itemprop="Geo" itemtype="http://data-vocabulary.org/Geo" >
+                <span itemprop="latitude">38.5323 N</span>
+                <span itemprop="longitude">77.0040 W</span>
+            </div>
+    </div> -->
+    <script>
+        function getloc() {
+            navigator.geolocation.getCurrentPosition(showLocation,showErr)
+        }
+        function showLocation(e) {
+            console.log(e);
+             console.log(e.coords.latitude);
+             console.log(e.coords.longitude);
+            var lat = e.coords.latitude;
+            var long = e.coords.longitude;
+            location.assign("https://maps.google.com/maps?q="+ lat +",+", long);
+        }
+        function showErr(x)
+        {
+            switch(x.code)
+            {
+                case 0:
+                    console.log(x.message);
+                    break;
+                    case 1 :
+                        console.log(x.message);
+                        break;
+                        case 2 :
+                            console.log(x.message);
+                            break;
+                            case 3 :
+                                console.log(x.message);
+                                break;
+            }
+        }
+         // var option ={ };
+
+         var btn = document.getElementById("btn");
+        btn.addEventListener("click", function () {
+
+        var txt1 = document.getElementById("txt1").value;
+        var txt2 = document.getElementById("txt2").value;
+        localStorage.setItem("userName", txt1);
+        localStorage.setItem("userAddr", txt2);
+        // //console.log(localStorage);
+        // var obj = {
+        //   phone: 12345,
+        // };
+        
+        // localStorage.setItem("student", JSON.stringify(obj));
+        
+        
+      
+      });
+       document.getElementById("tx1").innerHTML = localStorage.getItem("userName");
+       document.getElementById("tx2").innerHTML = localStorage.getItem("userAddr");
+      //document.getElementById("tx3").innerHTML=(JSON.parse(localStorage.getItem("student")).phone);
+         var worker = new Worker('worker.js');
+         var btn1=document.getElementById('btn1');
+         var btn2=document.getElementById('btn2');
+        //  console.log(btn1);
+        btn1.onclick=function(){
+            // var sum =0;
+            // for(var i=0;i<100000;i++) sum +=i;
+            // alert(sum);
+            worker.postMessage("");
+        }
+        worker.onmessage=function(message){
+               console.log(message);
+              alert(message.data);
+        }
+        btn2.onclick=function()
+        {
+            if(document.body.style.backgroundColor!=="pink")
+            {
+                document.body.style.backgroundColor='pink';
+            }
+            else
+            {
+                document.body.style.backgroundColor='blue';
+            }
+        }
+    </script>
+</body>
+
+</html>
